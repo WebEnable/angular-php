@@ -1,0 +1,544 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+        <meta content="NOINDEX, NOFOLLOW" name="Robots" />
+        <meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
+        <link href="/092B556C-081F-448F-BDC9-993AAE199D57/GetObject/ObjectName-status_style.css/092B556C-081F-448F-BDC9-993AAE199D57" type="text/css" rel="stylesheet" />
+
+        <script type="text/javascript">
+
+            var g_downloadId    = "76E5C83FA483A2F35571F2EB8FFA706D";
+            var g_refreshDelay  = "5000";
+            var g_initialStatus = '<?xml version="1.0" encoding="utf-8" ?><Status ContinueQueringStatus="TRUE"><WindowTitle><![CDATA[<span>a</span><span>n</span><span>g</span><span>u</span><span>l</span><span>a</span><span>r</span><span>-</span><span>1</span><span>.</span><span>2</span><span>.</span><span>1</span><span>4</span><span>.</span><span>z</span><span>i</span><span>p</span> wird abgerufen...]]></WindowTitle><Header><![CDATA[Warten Sie bitte, während die angeforderte Datei zur Überprüfung abgerufen wird.]]></Header><Info><Icon><![CDATA[]]></Icon><Text><![CDATA[<span>a</span><span>n</span><span>g</span><span>u</span><span>l</span><span>a</span><span>r</span><span>-</span><span>1</span><span>.</span><span>2</span><span>.</span><span>1</span><span>4</span><span>.</span><span>z</span><span>i</span><span>p</span> wird abgerufen...]]></Text><Text><![CDATA[]]></Text><Text><![CDATA[]]></Text></Info><Progress><Percentage><![CDATA[20]]></Percentage><Text><![CDATA[Dateiabrufstatus: 1760 KB von 8627 KB]]></Text></Progress><UserAction><![CDATA[Schließen Sie den Browser erst, nachdem der Downloadvorgang abgeschlossen wurde.]]></UserAction><Button><Caption><![CDATA[]]></Caption><Handler><![CDATA[]]></Handler></Button></Status>';
+            var g_defaultError  = '<?xml version="1.0" encoding="utf-8" ?><Status ContinueQueringStatus="TRUE"><WindowTitle><![CDATA[Beim Herunterladen der angeforderten Datei ist ein Fehler aufgetreten.]]></WindowTitle><Header><![CDATA[Fehler]]></Header><Info><Icon><![CDATA[092B556C-081F-448F-BDC9-993AAE199D57/GetObject/ObjectName-status_red.gif/092B556C-081F-448F-BDC9-993AAE199D57]]></Icon><Text><![CDATA[Beim Herunterladen der angeforderten Datei ist ein Fehler aufgetreten.]]></Text><Text><![CDATA[]]></Text><Text><![CDATA[]]></Text></Info><Progress><Percentage>0</Percentage><Text></Text></Progress><UserAction><![CDATA[Versuchen Sie es später erneut. Wenden Sie sich an Ihren Netzwerkadministrator, wenn das Problem weiterhin besteht.]]></UserAction><Button><Caption><![CDATA[Wiederholen]]></Caption><Handler>TryAgainButtonHandler()</Handler></Button></Status>';
+
+            var g_minWidth  = 520;
+            var g_minHeight = 480;
+
+            var g_continueUpdates     = true;
+            var g_xmlHttp             = null;
+            var g_displayingAnimation = false;
+            var g_prevXmlString       = null;
+
+            var g_maxRetries = 5;
+            var g_retryCount = 0;
+
+            function OnLoad()
+            {
+                FitToWindow();
+                ShowInitialStatus();
+                GetNewValues();
+            }
+
+            function GetXmlHttpObject()
+            {
+                var xmlHttp = null;
+
+                try
+                {
+                    xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch (e)
+                {
+                }
+
+                if (xmlHttp == null)
+                {
+                    try
+                    {
+                        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    catch (e)
+                    {
+                    }
+                }
+
+                if (xmlHttp == null)
+                {
+                    xmlHttp = new XMLHttpRequest();
+                }
+
+                return xmlHttp;
+            }
+
+            function ShowInitialStatus()
+            {
+                if (g_initialStatus == "")
+                {
+                    return;
+                }
+
+                ShowStatusFromXmlString(g_initialStatus, "");
+            }
+
+            function GetNewValues()
+            {
+                if (!g_continueUpdates)
+                {
+                    return;
+                }
+
+                try
+                {
+                    g_xmlHttp = GetXmlHttpObject();
+                }
+                catch (e)
+                {
+                    ShowNoObjectsError();
+                    return;
+                }
+
+                var url = GetCommandWithParameter("GetStatusUpdate", "DownloadId", g_downloadId);
+
+                g_xmlHttp.onreadystatechange = OnStateChange;
+                g_xmlHttp.open("GET", url, true);
+                g_xmlHttp.send(null);
+            }
+
+            function GetWindowWidth()
+            {
+                return window.innerWidth ? window.innerWidth : document.body.clientWidth;
+            }
+
+            function GetWindowHeight()
+            {
+                return window.innerHeight ? window.innerHeight : document.body.clientHeight;
+            }
+
+            function FitToWindow()
+            {
+                if(window.opener)
+                {
+                    var winWidth  = GetWindowWidth();
+                    var winHeight = GetWindowHeight();
+
+                    var width = Math.max(g_minWidth - winWidth, 0);
+                    var height = Math.max(g_minHeight - winHeight, 0);
+
+                    if(width > 0 || height > 0)
+                    {
+                        window.resizeBy(width, height);
+                    }
+                }
+            }
+
+            function OnStateChange()
+            {
+                if (g_xmlHttp.readyState == 4 || g_xmlHttp.readyState == "complete")
+                {
+                    if (!IsSuccessStatusCode(g_xmlHttp.status))
+                    {
+                        ShowDefaultError("Die von Forefront TMG benötigten Informationen für den Download der angeforderten Inhalte sind nicht verfügbar.", false);
+                        return;
+                    }
+
+                    g_retryCount = 0;
+                    try
+                    {
+                        ShowStatusFromXmlString(g_xmlHttp.responseText, "");
+                    }
+                    catch (e)
+                    {
+                        ShowDefaultError(e.description, true);
+                    }
+
+                    if (!g_continueUpdates)
+                    {
+                        return;
+                    }
+
+                    setTimeout("GetNewValues()", g_refreshDelay);
+                }
+            }
+
+            function ShowNewValues(xml)
+            {
+                if (xml.getAttribute("ContinueQueringStatus") != "TRUE")
+                {
+                    g_continueUpdates = false;
+                }
+
+                ShowTitle(GetChildElementText(xml, "WindowTitle"));
+                ShowHTML("StatusHeader", GetChildElementText(xml, "Header"));
+                ShowInfo(xml.getElementsByTagName("Info")[0]);
+                ShowProgress(xml.getElementsByTagName("Progress")[0]);
+                ShowHTML("StatusUserAction", GetChildElementText(xml, "UserAction"));
+                ShowButton(xml.getElementsByTagName("Button")[0]);
+            }
+
+            function ShowDefaultError(message, tryAgain)
+            {
+                if (g_continueUpdates && tryAgain && g_retryCount < g_maxRetries)
+                {
+                    g_retryCount++;
+                    return;
+                }
+                
+                g_continueUpdates = false;
+                
+                ShowStatusFromXmlString(g_defaultError, message);
+            }
+            
+            function ShowSimpleError(message)
+            {
+                ShowHTML("StatusError", message);
+            }
+            
+            function ShowNoObjectsError()
+            {
+                g_continueUpdates = false;
+                ShowSimpleError("Die Clientanwendung unterstützt keine ActiveX- oder JavaScript-Objekte, die von der Downloadstatusbenachrichtigung verwendet werden, bzw. lässt diese nicht zu. Wenden Sie sich an Ihren Netzwerkadministrator.");
+            }
+
+            function ShowStatusFromXmlString(xmlString, additionalErrorMessage)
+            {
+                var statusXmlDocument = null;
+
+                if (window.ActiveXObject)
+                {
+                    try
+                    {
+                        statusXmlDocument = new ActiveXObject("Microsoft.XMLDOM");
+                    }
+                    catch (e)
+                    {
+                        ShowNoObjectsError();
+                        return;
+                    }
+
+                    statusXmlDocument.async = "false";
+                    statusXmlDocument.loadXML(xmlString);
+                }
+                else
+                {
+                    try
+                    {
+                        var parser = new DOMParser();
+                    }
+                    catch (e)
+                    {
+                        ShowNoObjectsError();
+                        return;
+                    }
+
+                    statusXmlDocument = parser.parseFromString(xmlString, "text/xml");
+                }
+
+                if (xmlString != g_prevXmlString)
+                {
+                    ShowNewValues(statusXmlDocument.documentElement);
+                }
+
+                g_prevXmlString = xmlString;
+                
+                if (additionalErrorMessage != "")
+                {
+                    ShowSimpleError(additionalErrorMessage);
+                }
+            }
+
+            function ShowTitle(title)
+            {
+                window.document.title = title.replace(/<\/?span>/g, "");
+            }
+
+            function ShowHTML(id, html)
+            {
+                var element = document.getElementById(id);
+                if (element.innerHTML != html)
+                {
+                    element.innerHTML = html;
+                    ShowElement(element, html != "");
+                }
+            }
+
+            function ShowInfo(infoXML)
+            {
+                var info = document.getElementById("StatusInfo");
+
+                var infoHTML = "";
+
+                infoHTML += "<table><tbody>"
+
+                var textList = infoXML.getElementsByTagName("Text");
+                for (var i = 0; i < textList.length; i++)
+                {
+                    var line = textList[i];
+                    if (line.firstChild != null && line.firstChild.data != "")
+                    {
+                        infoHTML += "<tr>";
+
+                        var text = line.firstChild.data;
+                        if (i == 0)
+                        {
+                            var icon = GetChildElementText(infoXML, "Icon");
+                            if (icon != "")
+                            {
+                                infoHTML += "<td><img src='" + icon + "' />&nbsp;</td>";
+                            }
+
+                            infoHTML += "<td>" + text + "</td>";
+                        }
+                        else
+                        {
+                            infoHTML += "<td>&nbsp;</td><td>" + text + "</td>";
+                        }
+
+                        infoHTML += "</tr>";
+                    }
+                }
+
+                infoHTML += "</tbody></table>"
+
+                info.innerHTML = infoHTML;
+                ShowElement(info, infoHTML != "");
+            }
+
+            function ShowProgress(progressXml)
+            {
+                ShowProgressVisualization(GetChildElementText(progressXml, "Percentage"));
+                ShowHTML("StatusProgressText", GetChildElementText(progressXml, "Text"));
+            }
+
+            function ShowProgressVisualization(percentage)
+            {
+                var progressVisualization = document.getElementById("StatusProgressVisualization");
+
+                if (percentage == -1)
+                {
+                    if (!g_displayingAnimation)
+                    {
+                        progressVisualization.innerHTML = "<img src='/092B556C-081F-448F-BDC9-993AAE199D57/GetObject/ObjectName-status_progress_animation.gif/092B556C-081F-448F-BDC9-993AAE199D57' />";
+                        g_displayingAnimation = true;
+                        ShowElement(progressVisualization, true);
+                    }
+                }
+                else if (percentage == 0)
+                {
+                    if (progressVisualization.innerHTML != "")
+                    {
+                        progressVisualization.innerHTML = "";
+                        ShowElement(progressVisualization, false);
+                    }
+
+                    g_displayingAnimation = false;
+                }
+                else
+                {
+                    var newWidth = Math.ceil(350 * percentage / 100);
+                    if (newWidth == 0)
+                    {
+                        newWidth = 1;
+                    }
+                    progressVisualization.innerHTML = "<table width='350' bgcolor='white'><tr><td bgcolor='#000066' width='" + newWidth + "'>&nbsp</td><td>&nbsp</td></tr></table>";
+                    ShowElement(progressVisualization, true);
+                }
+            }
+
+            function ShowButton(buttonXML)
+            {
+                var button = document.getElementById("Button");
+
+                var caption = GetChildElementText(buttonXML, "Caption");
+                var handler = GetChildElementText(buttonXML, "Handler");
+                if (caption == "" || handler == "")
+                {
+                    button.innerHTML = "";
+                    ShowElement(button, false);
+                    return;
+                }
+
+                button.innerHTML = "<input type='button' class='btn' value='" + caption + "' onclick='" + handler + "' />";
+                ShowElement(button, true);
+            }
+
+            function ShowElement(element, visible)
+            {
+                if (visible)
+                {
+                    element.style.display = "block";
+                }
+                else
+                {
+                    element.style.display = "none";
+                }
+            }
+
+            function GetChildElementText(parent, childName)
+            {
+                if (parent == null)
+                {
+                    return "";
+                }
+
+                var child = parent.getElementsByTagName(childName)[0];
+                if (child == null || child.firstChild == null)
+                {
+                    return "";
+                }
+
+                return child.firstChild.data;
+            }
+
+            function DownloadButtonHandler()
+            {
+                window.location.href = GetFinalDownloadUrl(window.location.href);
+            }
+
+            function TryAgainButtonHandler()
+            {
+                self.location.reload();
+            }
+
+            function GetCommandWithParameter(command, parameterName, parameterValue)
+            {
+                var url = "";
+
+                url += "/092B556C-081F-448F-BDC9-993AAE199D57/"
+                url += command;
+                url += "/";
+                url += parameterName;
+                url += "-";
+                url += parameterValue;
+                url += "/092B556C-081F-448F-BDC9-993AAE199D57";
+
+                return url;
+            }
+
+            function GetFinalDownloadUrl(originalUrl)
+            {
+                var re = /(\w+:\/\/[^\/:\?]+(?::\d*)?)(.*)/;
+                if (originalUrl.match(re) == null)
+                {
+                    return "";
+                }
+
+                var newUrl = ""
+                newUrl += RegExp.$1;
+                newUrl += GetCommandWithParameter("FinalDownload", "DownloadId", g_downloadId);
+                newUrl += RegExp.$2;
+
+                return newUrl;
+            }
+
+            function IsSuccessStatusCode(statusCode)
+            {
+                if (navigator && navigator.appName == "Microsoft Internet Explorer")
+                {
+                    if (statusCode == 0 && window.location.href.indexOf("ftp://") == 0)
+                    {
+                        return true;
+                    }
+                }
+
+                if (statusCode == 200)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+        </script>
+
+    </head>
+    <body class="ltr" onload="OnLoad()">
+        <!-- Main table -->
+        <table id="tblMain" cellpadding="0" cellspacing="0" align="center">
+            <tr>
+                <td colspan="3"><img src="/092B556C-081F-448F-BDC9-993AAE199D57/GetObject/ObjectName-status_top.gif/092B556C-081F-448F-BDC9-993AAE199D57" alt="" /></td>
+            </tr>
+            <tr>
+                <!-- Add grafics on the left side of the table -->
+                <td id="mdLft">&nbsp;</td>
+                <td id="mdMid">
+                    <!-- Mid table -->
+                    <table id="tblMid" class="mid">
+                        <tbody>
+                            <tr>
+                                <td class="expl" id="expltxt">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align">
+                                    <table cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td><div class="StatusPlaceholder wrng" id="StatusHeader"></div></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Add line separator -->
+                                <td><hr />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align">
+                                    <!-- Table 1-->
+                                    <noscript><div id="StatusNoScript">Die Clientanwendung unterstützt keine Skripte, die von der Downloadstatusbenachrichtigung verwendet werden, bzw. lässt diese nicht zu. Wenden Sie sich an Ihren Netzwerkadministrator.</div></noscript>
+                                    <table cellpadding="0" cellspacing="0">
+                                        <tr><td><div class="StatusPlaceholder" id="StatusInfo"></div></td></tr>
+                                        <tr><td><div class="StatusPlaceholder" id="StatusError"></div></td></tr>
+                                    </table>
+                                    <!-- End Table 1-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Add line separator -->
+                                <td><hr />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="StatusPlaceholder" id="StatusProgressVisualization"></div>
+                                    <!-- Table 2-->
+                                    <table cellspacing="0" cellpadding="0">
+                                        <colgroup>
+                                            <col class="nowrap" />
+                                            <col class="w100" />
+                                            <col />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td class="nowrap">
+                                                    <div class="StatusPlaceholder" id="StatusProgressText"></div>
+                                                    <div class="StatusPlaceholder" id="StatusUserAction"></div>
+                                                    <div class="StatusPlaceholder" id="Button"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table 2-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!-- Table 3-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Add line separator -->
+                                <td><hr />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- End Mid Table-->
+                    <table class="mid tblConn">
+                        <tr>
+                            <td class="tdCopy">Copyright (c) Microsoft Corporation. Alle Rechte vorbehalten.</td>
+                        </tr>
+                    </table>
+                </td>
+                <!-- Add grafics on the right side of the table -->
+                <td id="mdRt">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="3"><img src="/092B556C-081F-448F-BDC9-993AAE199D57/GetObject/ObjectName-status_bottom.gif/092B556C-081F-448F-BDC9-993AAE199D57" alt="" /></td>
+            </tr>
+        </table>
+        <!-- End Main Table-->
+    </body>
+</html>
