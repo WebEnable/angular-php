@@ -43,7 +43,7 @@ else{
 				session_start();
 				session_regenerate_id();
 				$_SESSION['initiated'] = 1;
-				$_SESSION['username'] = "User";
+				$_SESSION['username'] = "user";
 				$data['username'] = "user";
 				$data['success'] = true;
 			}

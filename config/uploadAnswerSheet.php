@@ -1,8 +1,8 @@
 <?php
 $errors         = array();  	// array to hold validation errors
 $data 			= array(); 		// array to pass back data
-
-if ((isset($_SESSION['username'])!="Admin") && (isset($_SESSION['initiated'])!=1))
+session_start();
+if ((isset($_SESSION['username'])!="admin") && (isset($_SESSION['initiated'])!=1))
 			{
 				$data['message'] = 'Thank you for visiting this page, but this is a restricted Page';
 			}
@@ -37,13 +37,16 @@ if (($_FILES["pdfFile"]["name"]!="") && ($_FILES['pdfFile']['type'] == "applicat
 
 	$classAnswer = clean($_POST['classAnswer']);
 	$subjectAnswer = clean($_POST['subjectAnswer']);
-
-	addAnswerSheet($classAnswer,$subjectAnswer,$newfilename);
+	$testDate = clean($_POST['testDate']); 
+	addAnswerSheet($classAnswer,$subjectAnswer,$testDate,$newfilename);
+	header("location: ../#/admin/upload/answersheet/true");
 	
 }
 else{
 	$errors['error'] = 'File not able to upload';
 	$data['errors'] = $errors;
+	header("location: ../#/admin/upload/answersheet/false");
+
 }
 
 }
