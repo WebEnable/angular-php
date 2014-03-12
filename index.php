@@ -30,7 +30,7 @@
 	<script src="js/app.js"></script>
 	<script src="js/controllers/main.js"></script>
   <script src="js/service/service.js"></script>
-  <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+  <script src="js/ui-bootstrap-tpls-0.10.0.js"></script>
   <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
