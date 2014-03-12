@@ -4,6 +4,13 @@
 	  <div ng-include src="'views/listGroups.php'" class="list-group"></div>
 	</div>
 	<div class="col-md-9" ng-if="UserService.isLogged">
+	<div class="alert alert-success" ng-if="(routeParams.id == 'true')">
+      <strong>Success!</strong>Answer sheet uploaded 
+    </div>
+	<div class="alert alert-danger" ng-if="(routeParams.id == 'false')">
+      <strong>Warning! </strong> Please try submitting again.
+    </div>
+
 		<form role="form" action="config/uploadAnswerSheet.php" enctype="multipart/form-data" method="post">
 		  <div class="form-group "> 
 		    <label for="Class">Class</label>
@@ -28,7 +35,7 @@
 		  </div>
 
 		  <div class="input-group">
-              <input type="text" class="form-control input-lg" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min="" max="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <input type="text" name="testDate" class="form-control input-lg" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min="" max="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
               <span class="input-group-btn">
                 <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>

@@ -19,27 +19,24 @@
 	<tbody>
 		<tr>
 			<td>Filter</td>
-			<td><input type="search" ng-model="search.sName" placeholder="Filter Name" class="form-control" /></td>
-			<td><input type="search" ng-model="search.sClass" placeholder="Filter Class" class="form-control" /></td>
-			<td><input type="search" ng-model="search.sYear" placeholder="Filter Year" class="form-control" /></td>
-			<td><input type="search" ng-model="search.sEmail" placeholder="Filter Email" class="form-control" />
-			<input type="search" ng-model="search.sMobile" placeholder="Filter Mobile" class="form-control" /></td>
+			<td><input type="search" ng-model="search.aClass" placeholder="Filter Class" class="form-control" /></td>
+			<td><input type="search" ng-model="search.aSubject" placeholder="Filter Subject" class="form-control" /></td>
+			<td><input type="search" ng-model="search.aDate" placeholder="Filter Date" class="form-control" /></td>
 			<td></td>
 			<td></td>
 		</tr>
 	</tbody>
 	<tbody class="studentList">
-	  <tr ng-repeat="studentLists in studentList | startFrom:currentPage*pageSize | limitTo:pageSize | filter:search:strict ">
-	    <td>{{$index + 1}}</td>
-	    <td>{{studentLists.sName}}</td>
-	    <td>{{studentLists.sClass}}</td>
-	    <td>{{studentLists.sYear}}</td>
-	    <td><strong>Email </strong>: {{studentLists.sEmail}}<br>
-	    <strong>Mobile </strong>: {{studentLists.sMobile}}<br>
-	    <strong>Email Cc </strong>: {{studentLists.sEmailCc}}</td>
-	    <td>{{studentLists.sNotes}}</td>
-	    <td><a type="button" class="btn btn-default" ng-href="#/admin/edit/{{studentLists.sID}}">
-	    <span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+	  <tr ng-repeat="answerSheetLists in answerSheetList | startFrom:currentPageA*pageSizeA | limitTo:pageSizeA | filter:search:strict ">
+	    <td>{{$index + 1 + (currentPageA * pageSizeA)}}</td>
+	    <td>{{answerSheetLists.aClass}}</td>
+	    <td>{{answerSheetLists.aSubject}}</td>
+	    <td>{{answerSheetLists.aDate}}</td>
+	    <td>
+	    <a class="btn btn-default" ng-href="config/downloadPdf.php?pdfName={{answerSheetLists.aPdfFile}}" target="_blank" >
+	    <span class="glyphicon glyphicon-download" ></span> Download </a></td>
+	    <td><a type="button" class="btn btn-default" >
+	    <span class="glyphicon glyphicon-edit"></span> Delet</a></td>
 	  </tr>
 	</tbody>
   </table>
@@ -47,16 +44,16 @@
 
 <ul class="pager">
   <li class="previous">
-  <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+  <button ng-disabled="currentPageA == 0" ng-click="currentPageA=currentPageA-1">
   &larr; Previous
     </button>
     </li>
   <li class="next">
-      <button ng-disabled="currentPage >= studentList.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+      <button ng-disabled="currentPageA >= answerSheetList.length/pageSizeA - 1" ng-click="currentPageA=currentPageA+1">
         Next  &rarr;</button></li>
 </ul>
  
-    {{currentPage+1}}/{{numberOfPages()}}
+    {{currentPageA+1}}/{{numberOfPagesA()}}
 
 	</div>
 </div>

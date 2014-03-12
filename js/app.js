@@ -33,7 +33,7 @@ angular.module('NileshTutorial', [
           controller:'addTestMarks',
           templateUrl:'views/updateMarks.php'
         })
-        .when('/admin/upload/answersheet', {
+        .when('/admin/upload/answersheet/:id', {
           controller:'uploadAnswerSheet',
           templateUrl:'views/answerSheetUpload.php'
         })
