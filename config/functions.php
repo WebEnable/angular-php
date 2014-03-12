@@ -30,9 +30,9 @@ function addStudentInfo($studentName,$studentEmail,$studentEmailCC,$studentClass
 	 $query = mysql_query("INSERT INTO `studentinfo` (`sID`, `sName`, `sEmail`, `sEmailCc`, `sClass`, `sYear`, `sNotes`, `sMobile`) VALUES (NULL, '$studentName', '$studentEmail', '$studentEmailCC', '$studentClass', '$studentYear', '$studentNotes', '$studentMobile')") or die(mysql_error());			
 	 return true;			 
 }
-function addAnswerSheet($classAnswer,$subjectAnswer,$newfilename)
+function addAnswerSheet($classAnswer,$subjectAnswer,$testDate,$newfilename)
 {
-	 $query = mysql_query("INSERT INTO `answersheet` (`aClass`, `aSubject`, `aPdfFile`,`aHide` ) VALUES ('$classAnswer','$subjectAnswer','$newfilename', 1)") or die(mysql_error());	
+	 $query = mysql_query("INSERT INTO `answersheet` (`aClass`, `aSubject`, `aPdfFile`, `aDate`,`aHide` ) VALUES ('$classAnswer','$subjectAnswer','$newfilename','$testDate', 1)") or die(mysql_error());	
 	 return true;			 
 }
 ?>
