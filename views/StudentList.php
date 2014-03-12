@@ -60,6 +60,9 @@
     {{currentPage+1}}/{{numberOfPages()}}
 
 	</div>
+
+<div class="col-md-9 " ng-if="!UserService.isLogged"><div class="jumbotron"><h1>Nilesh Tutorial</h1><p></p><p><a class="btn btn-primary btn-lg" href="#/">Login</a></p></div></div>
+
 </div>
 
 </div>
