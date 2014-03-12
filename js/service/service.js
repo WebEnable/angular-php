@@ -16,8 +16,8 @@ angular.module('NileshTutorial')
 angular.module('NileshTutorial')
 .factory('ClassSubject', function($rootScope) {
 
-    $rootScope.sdo = {};
-    $rootScope.sdo.classes = ['8','9','10','11','12'];
-    $rootScope.sdo.Subjects = ["Biology","Chemistry","Engilsh","Hindhi","Kannada","Mathematics","Physics","Sanskrith","Sceince","Social Sceince"];
-	return $rootScope.sdo;
+    $rootScope.classSub = {};
+    $rootScope.classSub.classes = ['8','9','10','11','12'];
+    $rootScope.classSub.Subjects = ["Biology","Chemistry","Engilsh","Hindhi","Kannada","Mathematics","Physics","Sanskrith","Sceince","Social Sceince"];
+	return $rootScope.classSub;
 });
