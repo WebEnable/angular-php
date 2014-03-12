@@ -31,7 +31,7 @@
 	</tbody>
 	<tbody class="studentList">
 	  <tr ng-repeat="studentLists in studentList | startFrom:currentPage*pageSize | limitTo:pageSize | filter:search:strict ">
-	    <td>{{$index + 1}}</td>
+	    <td>{{$index + 1 + (currentPage * pageSize)}}</td>
 	    <td>{{studentLists.sName}}</td>
 	    <td>{{studentLists.sClass}}</td>
 	    <td>{{studentLists.sYear}}</td>
@@ -39,7 +39,8 @@
 	    <strong>Mobile </strong>: {{studentLists.sMobile}}<br>
 	    <strong>Email Cc </strong>: {{studentLists.sEmailCc}}</td>
 	    <td>{{studentLists.sNotes}}</td>
-	    <td><a type="button" class="btn btn-default" ng-href="#/admin/edit/{{studentLists.sID}}">
+	    <td>
+	    <a type="button" class="btn btn-default" ng-href="#/admin/edit/{{studentLists.sID}}">
 	    <span class="glyphicon glyphicon-edit"></span> Edit</a></td>
 	  </tr>
 	</tbody>
