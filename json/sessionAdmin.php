@@ -13,7 +13,6 @@ if ((isset($_SESSION['username'])!="admin") && (isset($_SESSION['initiated'])!=1
 else{
 	$data['session'] = true;
 	$data['username'] = $_SESSION['username'];
-
 	$data['message'] = 'Success!';
 	}
 echo json_encode($data);

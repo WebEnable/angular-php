@@ -1,15 +1,15 @@
 <?php
-include_once 'functions.php';
-session_start();
-if ((isset($_SESSION['username'])!="Admin") && (isset($_SESSION['initiated'])!=1))
-			{
-				header("location: ../index.php#/");
-			}
-		else{
-
 $errors         = array();  	// array to hold validation errors
 $data 			= array(); 		// array to pass back data
 
+if ((isset($_SESSION['username'])!="Admin") && (isset($_SESSION['initiated'])!=1))
+			{
+				$data['message'] = 'Thank you for visiting this page, but this is a restricted Page';
+			}
+		else{
+
+
+include_once 'functions.php';
 //sanitize strings
 function clean($var)
 {
@@ -45,6 +45,7 @@ else{
 	$errors['error'] = 'File not able to upload';
 	$data['errors'] = $errors;
 }
-echo json_encode($data);
+
 }
+echo json_encode($data);
 ?>
