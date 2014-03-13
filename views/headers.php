@@ -14,23 +14,23 @@
  <div class="collapse navbar-collapse" id="collapse-1">
       <ul class="nav navbar-nav" ng-if="UserService.isLogged">
       <li class="">
-          <a href="#/admin">Home</a></li>
+          <a href="#!/admin">Home</a></li>
 
       </ul>
 <!-- {{UserService.isLogged}} -->
       <ul class="nav navbar-nav navbar-right">
         
         <li class="dropdown" ng-if="UserService.isLogged">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span><b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b> </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Change Password</a></li>
+            <li><a href="#!/">Change Password</a></li>
             <li class="divider"></li>
-            <li><a href="#"></a></li>
+            <li><a href="#!/"></a></li>
           </ul>
         </li>
 
-        <li ng-if="UserService.isLogged"><a href="#/logout">Logout</a></li>
-        <li ng-if="!UserService.isLogged"><a href="#/">Login</a></li>
+        <li ng-if="UserService.isLogged"><a href="#!/logout">Logout</a></li>
+        <li ng-if="!UserService.isLogged"><a href="#!/">Login</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

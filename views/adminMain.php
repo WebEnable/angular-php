@@ -6,7 +6,7 @@ if ((isset($_SESSION['username'])!="admin") && (isset($_SESSION['initiated'])!=1
 				<div class="jumbotron">
 				<h1>Nilesh Tutorial</h1>
 				<p></p>
-				<p><a class="btn btn-primary btn-lg" href="#/">Login</a>
+				<p><a class="btn btn-primary btn-lg" href="#!/">Login</a>
 				</p>
 				</div>
 				</div>

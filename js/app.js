@@ -7,7 +7,7 @@ angular.module('NileshTutorial', [
   'ngRoute',
   'ui.bootstrap'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
       $routeProvider
         .when('/', {
           controller: 'MainCtrl',
@@ -23,6 +23,10 @@ angular.module('NileshTutorial', [
         })
         .when('/admin/add/student', {
           controller:'addStudentCntrl',
+          templateUrl:'views/studentSetup.php'
+        })
+        .when('/admin/edit/:studentId/:sudentName', {
+          controller:'editStudentCntrl',
           templateUrl:'views/studentSetup.php'
         })
         .when('/admin/add/test', {
@@ -48,5 +52,8 @@ angular.module('NileshTutorial', [
         .otherwise({
           redirectTo: '/'
         });
+    $locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!');
+
 });
  
