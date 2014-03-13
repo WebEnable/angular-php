@@ -40,7 +40,7 @@
 	    <strong>Email Cc </strong>: {{studentLists.sEmailCc}}</td>
 	    <td>{{studentLists.sNotes}}</td>
 	    <td>
-	    <a type="button" class="btn btn-default" ng-href="#/admin/edit/{{studentLists.sID}}">
+	    <a type="button" class="btn btn-default" ng-href="#!/admin/edit/{{studentLists.sID}}/{{studentLists.sName}}">
 	    <span class="glyphicon glyphicon-edit"></span> Edit</a></td>
 	  </tr>
 	</tbody>
@@ -62,7 +62,7 @@
 
 	</div>
 
-<div class="col-md-9 " ng-if="!UserService.isLogged"><div class="jumbotron"><h1>Nilesh Tutorial</h1><p></p><p><a class="btn btn-primary btn-lg" href="#/">Login</a></p></div></div>
+<div class="col-md-9 " ng-if="!UserService.isLogged"><div class="jumbotron"><h1>Nilesh Tutorial</h1><p></p><p><a class="btn btn-primary btn-lg" href="#!/">Login</a></p></div></div>
 
 </div>
 

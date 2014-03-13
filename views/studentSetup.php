@@ -36,10 +36,18 @@ if ((isset($_SESSION['username'])!="Admin") && (isset($_SESSION['initiated'])!=1
 		    <label for="EmailId">Email Cc</label>
 		    <input type="text" name="studentEmailCC" class="form-control input-lg" id="EmailIdCc" placeholder="Email Cc" ng-model="formData.studentEmailCC">
 		  </div>
-		  <div class="form-group">
+		  <div class="form-group "> 
+		    <label for="Class">Class</label>
+		    <select class="form-control  input-lg" ng-model="formData.studentClass" name="studentClass" ng-options="option as option for option in ClassSubject.classes"></select>
+
+		    <input type="hidden" name="classAnswer" value="{{classes}}">
+		    <!-- 
+		    <input type="text" class="form-control input-lg"  id="Class" placeholder="Class"> -->
+		  </div>
+<!-- 		  <div class="form-group">
 		    <label for="Class">Class</label>
 		    <input type="text" name="studentClass" class="form-control input-lg" id="Class" placeholder="Class" ng-model="formData.studentClass">
-		  </div>
+		  </div> -->
 		  <div class="form-group">
 		    <label for="Year">Year</label>
 		    <input type="text" name="studentYear" class="form-control input-lg" id="Year" placeholder="Year" ng-model="formData.studentYear">

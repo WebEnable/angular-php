@@ -40,8 +40,13 @@ angular.module('NileshTutorial')
 angular.module('NileshTutorial')
   .controller('addStudentCntrl', function ($scope, $http,$location,UserService,ClassSubject) {
     $scope.UserService = UserService;
+    $scope.ClassSubject= ClassSubject;
+
+
 /*    if(!$scope.UserService.isLogged){$location.path('/');}*/
         $scope.formData = {};
+        $scope.formData.studentClass = $scope.ClassSubject.classes[0];
+
         $scope.addStudent = function() {
           $http({
                 method  : 'POST',
@@ -67,6 +72,35 @@ angular.module('NileshTutorial')
         };
       /*}*/
   });
+angular.module('NileshTutorial')
+  .controller('editStudentCntrl', function ($scope, $http,$location,UserService,ClassSubject,$routeParams) {
+    $scope.UserService = UserService;
+    $scope.ClassSubject= ClassSubject;
+    $scope.routeParams = $routeParams;
+    console.log($.param($scope.routeParams));
+
+          $http({
+                method  : 'GET',
+                url     : 'json/getStudent.php',
+                params    : $scope.routeParams,  // pass in data as strings
+                headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+            })
+                .success(function(data) {
+                    $scope.success = data.success;
+                    console.log(data);
+
+                    if (!data.success) {
+                      // if not successful, bind errors to error variables
+
+                    } else {
+                      // if successful, bind success message to message
+                       console.log(data);
+                       $scope.formData = data;
+                    }
+                });
+
+  });
+
 angular.module('NileshTutorial')
   .controller('addTestCntrl', function ($scope,$location,UserService,ClassSubject) {
     $scope.UserService = UserService;
@@ -170,6 +204,7 @@ angular.module('NileshTutorial')
     $scope.UserService = UserService;
     $scope.currentPageA = 0;
     $scope.pageSizeA = 50;
+    $scope.answerSheetList=[];
 //    $scope.data = [];
     $scope.numberOfPages=function(){
         return Math.ceil($scope.data.length/$scope.pageSize);                
@@ -197,6 +232,7 @@ angular.module('NileshTutorial')
     $scope.UserService = UserService;
     $scope.currentPage = 0;
     $scope.pageSize = 100;
+    $scope.studentList = [];
 //    $scope.data = [];
     $scope.numberOfPages=function(){
         return Math.ceil($scope.data.length/$scope.pageSize);                
